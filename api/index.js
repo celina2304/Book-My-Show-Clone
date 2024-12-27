@@ -23,7 +23,8 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.get("/", (req, res) => {
+
+app.get("/api/", (req, res) => {
     res.status(200).json({
         message: "Hello world!"
     })
