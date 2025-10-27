@@ -40,9 +40,6 @@ export const sendOtp = async (req, res) => {
     let user = await User.findOne({ email }).select("email isVerified otp otpExpires");
     console.log(user);
 
-    if (!user) {
-      return res.status(400).json({ message: "User already verified" });
-    }
     if (user?.isVerified) {
       return res.status(400).json({ message: "User already verified" });
     }
