@@ -2,9 +2,9 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const backendApi = axios.create({
-  baseURL: 'http://localhost:3000/api',
+    baseURL: 'https://book-my-show-clone-fawn-mu.vercel.app/api',
+  // baseURL: 'http://localhost:3000/api',
   withCredentials: true,
-//   baseURL: 'https://book-my-show-clone-fawn-mu.vercel.app/',
 });
 
 
