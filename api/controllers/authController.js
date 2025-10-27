@@ -62,22 +62,22 @@ export const sendOtp = async (req, res) => {
     }
 
     // Load email template
-    const html = loadTemplate("otp", {
-      appName: "Book my show clone",
-      appShort: "BMS",
-      ticketId: Math.floor(Math.random() * 900000) + 100000,
-      userName: user?.name || "User",
-      expiryMinutes: 10,
-      supportEmail: "celina2304dev@proton.me",
-      maskedEmail: email,
-      year: new Date().getFullYear(),
-      d1: otp[0],
-      d2: otp[1],
-      d3: otp[2],
-      d4: otp[3],
-      d5: otp[4],
-      d6: otp[5],
-    });
+    // const html = loadTemplate("otp", {
+    //   appName: "Book my show clone",
+    //   appShort: "BMS",
+    //   ticketId: Math.floor(Math.random() * 900000) + 100000,
+    //   userName: user?.name || "User",
+    //   expiryMinutes: 10,
+    //   supportEmail: "celina2304dev@proton.me",
+    //   maskedEmail: email,
+    //   year: new Date().getFullYear(),
+    //   d1: otp[0],
+    //   d2: otp[1],
+    //   d3: otp[2],
+    //   d4: otp[3],
+    //   d5: otp[4],
+    //   d6: otp[5],
+    // });
 
     // Send mail
     // await sendGmail({
