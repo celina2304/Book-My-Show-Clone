@@ -1,13 +1,11 @@
 import { useContext } from "react";
-import {
-  BiSearch,
-  BiMenu,
-  BiChevronDown,
-  BiShareAlt,
-} from "react-icons/bi";
+import { BiSearch, BiMenu, BiChevronDown, BiShareAlt } from "react-icons/bi";
 
 // Context
 import { MovieContext } from "../../context/movie.context";
+import { UserContext } from "../../context/user.context";
+import UserModal from "../UserModal/User.component";
+import { useNavigate } from "react-router-dom";
 
 const NavSm = () => {
   const { movie } = useContext(MovieContext);
@@ -26,11 +24,16 @@ const NavSm = () => {
 };
 
 const NavLg = () => {
+  const { user, setModalOpen } = useContext(UserContext);
+  const navigate = useNavigate();
   return (
     <>
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center w-1/2 gap-3">
-          <div className="w-12 h-12">
+          <div
+            className="w-12 h-12 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <img
               src="https://i.ibb.co/zPBYW3H/imgbin-bookmyshow-office-android-ticket-png.png"
               alt="logo"
@@ -50,9 +53,18 @@ const NavLg = () => {
           <span className="text-gray-200 text-xs flex items-center cursor-pointer hover:text-white">
             Bengaluru <BiChevronDown />
           </span>
-          <button className="bg-red-600 text-white px-2 py-1 text-sm rounded">
-            Sign in
-          </button>
+          {user && user.name ? (
+            user.name
+          ) : (
+            <button
+              onClick={() => {
+                setModalOpen(true);
+              }}
+              className="bg-red-600 text-white px-2 py-1 text-sm rounded"
+            >
+              Sign in
+            </button>
+          )}
           <div className="w-8 h-8 text-white">
             <BiMenu className="w-full h-full" />
           </div>
@@ -63,8 +75,10 @@ const NavLg = () => {
 };
 
 const MovieNavbar = () => {
+  
   return (
     <>
+      <UserModal />
       <nav className="absolute inset-x-0 z-30 bg-opacity-10 backdrop-filter backdrop-blur-lg lg:relative lg:bg-bms-700 p-4">
         <div className="md:hidden">
           {/* Mobile screen */}

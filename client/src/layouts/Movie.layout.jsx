@@ -1,13 +1,14 @@
-import axios from "axios";
-import  { useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 
 // Components
-import MovieNavbar from "../components/Navbar/movieNavbar.component";
+// import MovieNavbar from "../components/Navbar/movieNavbar.component";
 
 // context
 import { MovieContext } from "../context/movie.context";
+import { tmdbApi } from "../config/Axios.config";
+import Navbar from "../components/Navbar/navbar.component";
 
 const MovieLayout = (props) => {
   const { id } = useParams();
@@ -15,28 +16,27 @@ const MovieLayout = (props) => {
 
   useEffect(() => {
     const requestMovie = async () => {
-      const getMovieData = await axios.get(`/movie/${id}`);
+      const getMovieData = await tmdbApi.get(`/movie/${id}`);
       setMovie(getMovieData.data);
     };
     requestMovie();
   }, [id, setMovie]);
-  
-  if(movie){
+
+  if (movie) {
     //
   }
 
   return (
     <>
-      <MovieNavbar />
+      {/* <MovieNavbar /> */}
+      <Navbar />
       {props.children}
     </>
   );
 };
 
 MovieLayout.propTypes = {
-  children: PropTypes.node
-}
-
-
+  children: PropTypes.node,
+};
 
 export default MovieLayout;

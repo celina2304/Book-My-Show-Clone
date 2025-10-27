@@ -11,40 +11,51 @@ const MovieHero = () => {
       <div>
         {/* mobile */}
         <div
-          className="relative md:hidden w-full"
-          style={{ height: "calc(180vw)" }}
+          className="relative md:hidden w-full h-[50vh]"
+          style={{
+            // backgroundImage: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+            backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.poster_path})`,
+            backgroundSize: "cover",
+          }}
         >
           <div className="absolute z-20 bottom-4 left-4">
             <MovieInfo />
           </div>
-          <div className="w-full h-56 bg-opacity-50 absolute bg-black z-10 bottom-0" />
-          <img
+          <div className="w-full h-full bg-opacity-50 absolute bg-black z-10 bottom-0" />
+          {/* <img
             src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
             alt="poster"
-            className="w-full h-full"
-          />
+            className="w-full h-[40vh]"
+            // style={{ height: "calc(180vw)" }}
+          /> */}
         </div>
 
         {/* Medium */}
         <div
-          className="relative hidden md:block w-full lg:hidden"
-          style={{ height: "calc(100vw)" }}
+          className="relative hidden md:block w-full h-[60vh] lg:hidden"
+          style={{
+            // backgroundImage: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+            backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.poster_path})`,
+            backgroundSize: "cover",
+          }}
         >
-          <div className="w-full h-56 bg-opacity-50 absolute bg-black z-10 bottom-0" />
+          <div className="w-full h-full bg-opacity-50 absolute bg-black z-10 bottom-0" />
           <div className="absolute z-20 bottom-4 ">
             <MovieInfo />
           </div>
-          <img
+          {/* <img
             src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
             alt="poster"
             className="w-full h-full"
-          />
+          /> */}
         </div>
 
         {/* Large */}
         <div
-          className="relative hidden w-full lg:block"
-          style={{ height: "30rem" }}
+          className="relative hidden overflow-hidden w-full lg:block"
+          style={{
+            height: "35rem",
+          }}
         >
           <div
             className="absolute z-10 w-full h-full"
@@ -55,7 +66,7 @@ const MovieHero = () => {
           />
 
           <div className="absolute z-30 left-24 top-10 flex items-center gap-10">
-            <div className=" w-64 h-96 ">
+            <div className="w-64 h-96 ">
               <img
                 src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                 alt="poster"
@@ -66,11 +77,18 @@ const MovieHero = () => {
               <MovieInfo />
             </div>
           </div>
-          <img
+          <div className="absolute">
+            <img
+              src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+              alt="poster"
+              className="w-full h-full"
+            />
+          </div>
+          {/* <img
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
             alt="poster"
             className="w-full h-full"
-          />
+          /> */}
         </div>
       </div>
     </>

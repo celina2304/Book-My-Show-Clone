@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import HeroSlider from "react-slick";
-import axios from "axios";
 import { NextArrow, PrevArrow } from "./Arrows.component";
+import { tmdbApi } from "../../config/Axios.config";
 
 // Compoenent
 // import { NextArrow, PrevArrow } from "./Arrows.component";
@@ -11,7 +11,7 @@ const HeroCarousal = () => {
 
   useEffect(() => {
     const requestNowPlayingMovies = async () => {
-      const getImages = await axios.get("/movie/now_playing");
+      const getImages  = await tmdbApi.get("/movie/now_playing");
       setImages(getImages.data.results);
     };
 
@@ -46,7 +46,7 @@ const HeroCarousal = () => {
         <HeroSlider {...settings}>
           {images.map((image) => (
             <div
-              className="w-full h-56 md:h-80 py-3 "
+              className="w-full h-56 md:h-72 py-3 "
               key={`slider-hero-1${image.id}`}
             >
               <img

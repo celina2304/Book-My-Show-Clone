@@ -5,64 +5,78 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
+import { backendApi } from "../../config/Axios.config";
+import { toast } from "react-toastify";
+import { useContext } from "react";
+import { UserContext } from "../../context/user.context";
 
-const PaymentModal = ({
-  isOpen,
-  setIsOpen,
-  price,
-}) => {
-  const launchRazorPay = () => {
-    let options = {
-      key_id: import.meta.env.VITE_RAZORPAY_API_KEY_ID,
-      key: import.meta.env.VITE_RAZORPAY_API_KEY_ID,
-      amount: price * 100,
-      currency: "INR",
-      name: "Book My Show Clone",
-      description: "Movie Purchase or Rental",
-      image:
-        "https://i.ibb.co/zPBYW3H/imgbin-bookmyshow-office-android-ticket-png.png",
-      handler: () => {
-        setIsOpen(false);
-        alert("Payment Done");
-      },
-      theme: { color: "#c4242d" },
-    };
+const PaymentModal = ({ isOpen, setIsOpen, price }) => {
+  const { user } = useContext(UserContext);
 
-    let razorPay = new window.Razorpay(options);
-    razorPay.open();
+  const handlePayment = async (paymentData) => {
+    setIsOpen(false);
+    toast.success("Payment Successful");
+
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+      paymentData;
+
+    const response = await backendApi.post("/payment/verify", {
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature,
+    });
+
+    if (response.data.success) {
+      console.log("Payment verified. Receipt details:", response.data.receipt);
+    } else {
+      console.error("Payment verification failed:", response.data.message);
+    }
   };
-  // const launchRazorPay = async () => {
-  //   const response = await fetch("http://localhost:3001/api/create-order", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       amount: price * 100,
-  //       currency: "INR",
-  //       receipt: "receipt",
-  //       notes: {},
-  //     }),
-  //   });
-  //   const order = await response.json();
-  //   const options = {
-  //     key_id: import.meta.env.VITE_RAZORPAY_API_KEY_ID,
-  //     amount: order.amount,
-  //     currency: order.currency,
-  //     name: "Book My Show Clone",
-  //     description: "Movie Purchase or Rental",
-  //     image:
-  //       "https://i.ibb.co/zPBYW3H/imgbin-bookmyshow-office-android-ticket-png.png",
-  //     callback_url: "http://localhost:3001/payment-success",
 
-  //     handler: () => {
-  //       setIsOpen(false);
-  //       alert("Payment Done");
-  //     },
-  //     theme: { color: "#c4242d" },
-  //   };
-  //   const rzp = new (window.Razorpay as any)(options);
-  //   rzp.open();
-  // };
+  const launchRazorPay = async () => {
+    try {
+      const response = await backendApi.post("/payment/create-order", {
+        amount: price,
+        currency: "INR",
+      });
+
+      const { order_id, amount, currency } = await response.data;
+
+      let options = {
+        key: import.meta.env.VITE_RAZORPAY_API_KEY_ID,
+        amount: amount,
+        currency: currency,
+        name: "Book My Show Clone",
+        description: "Movie Purchase or Rental",
+        image:
+          "https://i.ibb.co/zPBYW3H/imgbin-bookmyshow-office-android-ticket-png.png",
+        order_id: order_id,
+        handler: handlePayment,
+        prefill: {
+          name: user.name,
+          email: user.email,
+          // contact: user.phone,
+        },
+        modal: {
+          // Failure or user dismissal handler
+          ondismiss: () => {
+            setIsOpen(false);
+            toast.error("Payment Unsuccessful!", {
+              autoClose: 2000,
+            });
+            console.log(response);
+          },
+        },
+        theme: { color: "#c4242d" },
+      };
+
+      let razorPay = new window.Razorpay(options);
+      razorPay.open();
+    } catch (error) {
+      console.error("Error launching Razorpay:", error);
+    }
+  };
 
   return (
     <>
@@ -120,36 +134,15 @@ const PaymentModal = ({
           </Dialog>
         </TransitionChild>
       </Transition>
-      {/* <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
-            <DialogTitle className="font-bold">Deactivate account</DialogTitle>
-            <Description>
-              This will permanently deactivate your account
-            </Description>
-            <p>
-              Are you sure you want to deactivate your account? All of your data
-              will be permanently removed.
-            </p>
-            <div className="flex gap-4">
-              <button onClick={() => setIsOpen(false)}>Cancel</button>
-              <button onClick={() => setIsOpen(false)}>Deactivate</button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog> */}
     </>
   );
 };
 
-PaymentModal.propTypes ={
+PaymentModal.propTypes = {
   price: PropTypes.number,
   isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func
-}
+  setIsOpen: PropTypes.func,
+  setIsReceiptModalOpen: PropTypes.func,
+};
 
 export default PaymentModal;

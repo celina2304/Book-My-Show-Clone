@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 
 // Components
 import EntertainmentCardSlider from "../components/Entertainment/Entertainmentcard.component";
 import PosterSlider from "../components/PosterSlider/PosterSlider.component";
+import { tmdbApi } from "../config/Axios.config";
 
 const HomePage= () => {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -12,7 +12,7 @@ const HomePage= () => {
 
   useEffect(() => {
     const requestPopularMovies = async () => {
-      const getPopularMovies = await axios.get("/movie/popular");
+      const getPopularMovies = await tmdbApi.get("/movie/popular");
       setPopularMovies(getPopularMovies.data.results);
     };
 
@@ -21,7 +21,7 @@ const HomePage= () => {
 
   useEffect(() => {
     const requestTopRatedMovies = async () => {
-      const getTopRatedMovies = await axios.get("/movie/top_rated");
+      const getTopRatedMovies = await tmdbApi.get("/movie/top_rated");
       setTopRatedMovies(getTopRatedMovies.data.results);
     };
 
@@ -30,7 +30,7 @@ const HomePage= () => {
 
   useEffect(() => {
     const requestUpcomingMovies = async () => {
-      const getUpcomingMovies = await axios.get("/movie/upcoming");
+      const getUpcomingMovies = await tmdbApi.get("/movie/upcoming");
       setUpcomingMovies(getUpcomingMovies.data.results);
     };
 

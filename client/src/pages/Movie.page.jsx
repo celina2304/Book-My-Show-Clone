@@ -1,6 +1,5 @@
 import { FaCcVisa, FaCcApplePay } from "react-icons/fa";
 import { useContext, useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router";
 import Slider from "react-slick";
 
@@ -11,6 +10,7 @@ import PosterSlider from "../components/PosterSlider/PosterSlider.component";
 
 // context
 import { MovieContext } from "../context/movie.context";
+import { tmdbApi } from "../config/Axios.config";
 
 const Movie = () => {
   const { id } = useParams();
@@ -21,7 +21,7 @@ const Movie = () => {
 
   useEffect(() => {
     const requestCast = async () => {
-      const getCast = await axios.get(`/movie/${id}/credits`);
+      const getCast = await tmdbApi.get(`/movie/${id}/credits`);
       setCast(getCast.data.cast);
     };
     requestCast();
@@ -29,7 +29,7 @@ const Movie = () => {
 
   useEffect(() => {
     const requestSimilarMovies = async () => {
-      const getSimilarMovies = await axios.get(`/movie/${id}/similar`);
+      const getSimilarMovies = await tmdbApi.get(`/movie/${id}/similar`);
       setSimilarMovies(getSimilarMovies.data.results);
     };
 
@@ -38,7 +38,7 @@ const Movie = () => {
 
   useEffect(() => {
     const requestRecommendedMovies = async () => {
-      const getRecommendedMovies = await axios.get(
+      const getRecommendedMovies = await tmdbApi.get(
         `/movie/${id}/recommendations`
       );
       setRecommended(getRecommendedMovies.data.results);
@@ -115,7 +115,7 @@ const Movie = () => {
   return (
     <>
       <MovieHero />
-      <div className="my-12 container  px-4 lg:ml-20 lg:w-2/3">
+      <div className="container py-5 md:py-5 lg:py-12 px-4 lg:ml-10 lg:w-2/3">
         <div className="flex flex-col items-start gap-3">
           <h2 className="text-gray-800 font-bold text-2xl">About the movie</h2>
           <p>{movie.overview}</p>
