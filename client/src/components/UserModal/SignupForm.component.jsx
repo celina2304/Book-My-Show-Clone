@@ -103,7 +103,7 @@ const SignupForm = ({ setIsSignupOpen, setIsLogin }) => {
         email,
         password,
       });
-      if (response.data.message === "User created successfully") {
+      if (response.data.message === "User registered successfully") {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         setUser(response.data.user);
         toast.success("Signup successful!");
@@ -201,12 +201,6 @@ const SendOtp = ({
           <p className="text-red-500">{signupError.emailErr}</p>
         )}
       </div>
-      {/* <button
-        onSubmit={handleSendOtp}
-        className="w-full text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-      >
-        Get OTP
-      </button> */}
     </>
   );
 };
@@ -287,13 +281,6 @@ const VerifyOtp = ({
           onBlur={() => setIsFocused(false)}
         />
       </div>
-      {otpError && <p className="text-red-500 text-sm">{otpError}</p>}
-      <button
-        onClick={handleVerifyOtp}
-        className="w-full text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-      >
-        Verify OTP
-      </button>
 
       <button
         onClick={handleResend}
@@ -346,6 +333,7 @@ const Signup = ({ signupFormData, handleChange, signupError }) => {
           placeholder="Emelia Erickson"
         />
       </div>
+      <p>Just One Upper, One Lower, One Number</p>
       <div>
         <label htmlFor="password" className={labelCls}>
           Password
@@ -382,12 +370,6 @@ const Signup = ({ signupFormData, handleChange, signupError }) => {
           <p className="text-red-500">{signupError.passwordErr}</p>
         )}
       </div>
-      <button
-        type="submit"
-        className="w-full text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-      >
-        Signup
-      </button>
     </>
   );
 };

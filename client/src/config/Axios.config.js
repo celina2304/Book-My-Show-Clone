@@ -1,19 +1,22 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from "axios";
+import Cookies from "js-cookie";
+
+const BASE_URL =
+  import.meta.env.NODE_ENV === "production"
+    ? "https://book-my-show-clone-fawn-mu.vercel.app/api"
+    : "http://localhost:3000/api";
 
 const backendApi = axios.create({
-    baseURL: 'https://book-my-show-clone-fawn-mu.vercel.app/api',
-  // baseURL: 'http://localhost:3000/api',
+  baseURL: BASE_URL,
   withCredentials: true,
 });
 
-
 backendApi.interceptors.request.use(
   (config) => {
-    const token = Cookies.get('authToken');
+    const token = Cookies.get("authToken");
 
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
 
     return config;
@@ -23,13 +26,11 @@ backendApi.interceptors.request.use(
   }
 );
 
-
-
 const tmdbApi = axios.create({
-    baseURL: 'https://api.themoviedb.org/3',
-    params: {
-      api_key: import.meta.env.VITE_TMDB_API_KEY,
-    },
-  });
+  baseURL: "https://api.themoviedb.org/3",
+  params: {
+    api_key: import.meta.env.VITE_TMDB_API_KEY,
+  },
+});
 
 export { backendApi, tmdbApi };
